@@ -17,7 +17,7 @@ body {
 @theme {
   /* Custom CSS Variables */
   --color-primary-color: #7bab43;
-  --color-secondary-color: #f3f8eb;
-  --color-shade-grey:#F8F8F8
-
+  --color-secondary-color: #f3f8eba3;
+  --color-shade-grey:#F8F8F8;
 }
+

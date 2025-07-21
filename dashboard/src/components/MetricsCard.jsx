@@ -1,10 +1,10 @@
 // card for User Engagement and so on
 import React from "react";
 
-export default function MetricsCard() {
+export default function MetricsCard({className}) {
   return (
     <>
-      <div className="card w-96 bg-base-100 shadow-sm">
+      <div className={`${className} card bg-base-100 shadow-sm`}>
         <div className="card-body">
           <div className="pb-5">
             <h2 className="font-semibold text-xl mb-2">User Engagement</h2>

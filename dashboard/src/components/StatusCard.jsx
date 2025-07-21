@@ -1,10 +1,10 @@
 // card for Total Users and so on
 import React from "react";
 
-export default function StatusCard() {
+export default function StatusCard({className}) {
   return (
     <>
-      <div className="card w-96 bg-base-100 shadow-sm">
+      <div className= {`${className} card bg-base-100 shadow-sm`}>
         <div className="card-body">
           <div className="flex justify-between items-center">
             <h2 className="text-lg capitalize">Total users</h2>
