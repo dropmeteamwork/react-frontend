@@ -1,13 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UserCard from "../components/UserCard";
 import ReferralCard from "../components/ReferralCard";
 import VoucherCard from "../components/VoucherCard";
 import AnalyticsCard from "../components/AnalyticsCard";
+import axios from "axios";
+import UserTransaction from "../components/UserTransaction";
 
-export default function TransactionPage({ className }) {
+export default function TransactionPage() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://dropme.up.railway.app/dashboard/recycle-logs/"
+        );
+        console.log(response.data);
+        setData(response.data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-lg font-medium">Loading data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen text-red-600">
+        <p className="text-lg font-medium">Error: {error.message} </p>
+      </div>
+    );
+  }
   return (
     <>
-      <div className={`${className} card bg-base-100 shadow-sm mb-4`}>
+      <div className={`card bg-base-100 shadow-sm`}>
         <div className="card-body">
           <div className="pb-5 flex justify-between">
             <div>
@@ -41,21 +79,28 @@ export default function TransactionPage({ className }) {
             </div>
           </div>
           <div className="grid grid-cols-1 gap-6 ">
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
+            {data.slice(0, 20).map((data, index) => (
+              <UserTransaction 
+              key={index} 
+              name={data.user}
+              machine={data.machine}
+              bottles={data.bottles}
+              cans={data.cans}
+              date={data.created_at}
+              />
+            ))}
+
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         <ReferralCard />
         <VoucherCard />
       </div>
       <div>
         <AnalyticsCard />
-      </div>
+      </div> */}
     </>
   );
 }

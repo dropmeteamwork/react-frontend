@@ -12,6 +12,7 @@ import AnalyticsPage from "./pages/AnalyticsPage";
 import ReportPage from "./pages/ReportPage";
 
 export default function App() {
+  
   return (
     <>
       <NavBar />
@@ -25,7 +26,7 @@ export default function App() {
           {/* <Route path="/ai-performance" element={<AiPerformancePage />} /> */}
           <Route path="/transaction" element={<TransactionPage />} />
           {/* <Route path="/analytics" element={<AnalyticsPage/>} /> */}
-          <Route path="/reports" element={<ReportPage/>} />
+          {/* <Route path="/reports" element={<ReportPage/>} /> */}
         </Routes>
       </div>
     </>

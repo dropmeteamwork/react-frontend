@@ -69,7 +69,7 @@ export default function SecondaryNav() {
         </div>
       </NavLink>
 
-      <NavLink
+      {/* <NavLink
         to="/ai-performance"
         className={({ isActive }) => getNavLinkClasses(isActive)}
       >
@@ -77,7 +77,7 @@ export default function SecondaryNav() {
           <SvgIcon pathD={iconPaths.aiPerformance} className="size-6" />
           <span className="hidden md:inline text-base">Ai Performance</span>
         </div>
-      </NavLink>
+      </NavLink> */}
 
       <NavLink
         to="/transaction"
@@ -89,7 +89,7 @@ export default function SecondaryNav() {
         </div>
       </NavLink>
 
-      <NavLink
+      {/* <NavLink
         to="/analytics"
         className={({ isActive }) => getNavLinkClasses(isActive)}
       >
@@ -97,9 +97,9 @@ export default function SecondaryNav() {
           <SvgIcon pathD={iconPaths.analytics} className="size-6" />
           <span className="hidden md:inline text-base">Analytics</span>
         </div>
-      </NavLink>
+      </NavLink> */}
 
-      <NavLink
+      {/* <NavLink
         to="/reports"
         className={({ isActive }) => getNavLinkClasses(isActive)}
       >
@@ -107,7 +107,7 @@ export default function SecondaryNav() {
           <SvgIcon pathD={iconPaths.reports} className="size-6" />
           <span className="hidden md:inline text-base">Reports</span>
         </div>
-      </NavLink>
+      </NavLink> */}
     </nav>
   );
 }
