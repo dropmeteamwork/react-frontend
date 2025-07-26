@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StatusCard from "../components/StatusCard";
 import MetricsCard from "../components/MetricsCard";
 import AnalyticsCard from "../components/AnalyticsCard";
 import AlertCard from "../components/AlertCard";
 
 export default function OverViewPage() {
+
+  const [data,setData] = useState("");
+  useEffect(() => {
+
+  }, []);
+
+
   return (
     <div className="">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">

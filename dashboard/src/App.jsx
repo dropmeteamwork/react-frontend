@@ -22,9 +22,9 @@ export default function App() {
           <Route path="/environment" element={<EnvironmentPage />} />
           <Route path="/users" element={<UserPage />} />
           <Route path="/machines" element={<MachinePage />} />
-          <Route path="/ai-performance" element={<AiPerformancePage />} />
+          {/* <Route path="/ai-performance" element={<AiPerformancePage />} /> */}
           <Route path="/transaction" element={<TransactionPage />} />
-          <Route path="/analytics" element={<AnalyticsPage/>} />
+          {/* <Route path="/analytics" element={<AnalyticsPage/>} /> */}
           <Route path="/reports" element={<ReportPage/>} />
         </Routes>
       </div>

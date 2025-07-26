@@ -86,19 +86,6 @@ export default function NavBar() {
               </button>
             </li>
 
-            {/* Alerts Button */}
-            <li>
-              <button className="btn btn-ghost font-normal flex items-center gap-2">
-                <SvgIcon
-                  pathD={iconPaths.alerts}
-                  className="size-4 md:size-5"
-                />
-                <span className="hidden md:inline text-sm md:text-base">
-                  Alerts
-                </span>
-              </button>
-            </li>
-
             {/* Privacy Button */}
             <li>
               <button className="btn btn-ghost font-normal flex items-center gap-2">
@@ -108,19 +95,6 @@ export default function NavBar() {
                 />
                 <span className="hidden md:inline text-sm md:text-base">
                   Privacy
-                </span>
-              </button>
-            </li>
-
-            {/* Logout Button */}
-            <li>
-              <button className="btn btn-ghost font-normal flex items-center gap-2">
-                <SvgIcon
-                  pathD={iconPaths.logout}
-                  className="size-4 md:size-5"
-                />
-                <span className="hidden md:inline text-sm md:text-base">
-                  Logout
                 </span>
               </button>
             </li>
