@@ -102,12 +102,13 @@ export default function OverViewPage() {
         />
       </div>
 
-      <div className="mt-6 mb-6 grid grid-cols-1 gap-4">
+      {/* <div className="mt-6 mb-6 grid grid-cols-1 gap-4">
         <AnalyticsCard
           title="Material Distribution"
           subTitle="Breakdown by material type"
         />
-      </div>
+      </div> */}
+
       <div className="mt-6 card bg-base-100 shadow-sm ">
         <div className="card-body">
           <div className="pb-2">
