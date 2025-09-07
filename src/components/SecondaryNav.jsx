@@ -32,7 +32,7 @@ export default function SecondaryNav() {
 
   return (
     <nav className="flex flex-wrap justify-center items-center gap-x-3 gap-y-2 bg-secondary-color shadow-sm rounded-lg xl:flex-nowrap xl:justify-between p-3 xl:p-0 mb-6">
-      <NavLink to="/" className={({ isActive }) => getNavLinkClasses(isActive)}>
+      <NavLink to="/app/overview" className={({ isActive }) => getNavLinkClasses(isActive)}>
         <div className="flex items-center gap-2 " title="overview">
           <SvgIcon pathD={iconPaths.overview} className="size-6" />
           <span className="hidden md:inline text-base">Overview</span>
@@ -40,7 +40,7 @@ export default function SecondaryNav() {
       </NavLink>
 
       <NavLink
-        to="/environment"
+        to="/app/environment"
         className={({ isActive }) => getNavLinkClasses(isActive)}
       >
         <div className="flex items-center gap-2 " title="environment">
@@ -50,7 +50,7 @@ export default function SecondaryNav() {
       </NavLink>
 
       <NavLink
-        to="/users"
+        to="/app/users"
         className={({ isActive }) => getNavLinkClasses(isActive)}
       >
         <div className="flex items-center gap-2 " title="users">
@@ -60,7 +60,7 @@ export default function SecondaryNav() {
       </NavLink>
 
       <NavLink
-        to="/machines"
+        to="/app/machines"
         className={({ isActive }) => getNavLinkClasses(isActive)}
       >
         <div className="flex items-center gap-2 " title="machines">
@@ -80,7 +80,7 @@ export default function SecondaryNav() {
       </NavLink> */}
 
       <NavLink
-        to="/transaction"
+        to="/app/transaction"
         className={({ isActive }) => getNavLinkClasses(isActive)}
       >
         <div className="flex items-center gap-2 " title="transactions">
