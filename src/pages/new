@@ -1,0 +1,53 @@
+// {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
+//         <StatusCard
+//           title="CO2 Emissions Saved"
+//           number={`${data.co2_emissions_saved} Kg`}
+//           subTitle="Network-wide impact"
+//           pathD={icons[0].pathD}
+//           iconColor={icons[0].iconColor}
+//         />
+//         <StatusCard
+//           title="Water Conserved"
+//           number={`${data.water_conserved} L`}
+//           subTitle="Total water saved"
+//           pathD={icons[1].pathD}
+//           iconColor={icons[1].iconColor}
+//         />
+//         <StatusCard
+//           title="Energy Saved"
+//           number={`${data.energy_saved} kWh`}
+//           subTitle="Energy conservation"
+//           pathD={icons[2].pathD}
+//           iconColor={icons[2].iconColor}
+//         />
+//         <StatusCard
+//           title="Items Recycled"
+//           number={data.total_recycled_items}
+//           subTitle="Total items processed"
+//           pathD={icons[3].pathD}
+//           iconColor={icons[3].iconColor}
+//         />
+//       </div>
+//       <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+//         {/* <AnalyticsCard
+//           title="Environmental Impact Trends"
+//           subTitle="Monthly environmental impact metrics"
+//         /> */}
+//         <AnalyticsCard
+//           title="Carbon Footprint Redcution"
+//           subTitle="Equivalent environmental benefits"
+//         >
+//           <div className="flex justify-between items-center mb-1">
+//             <p className="text-base">Tree Equivalent </p>
+//             <span className="text-lg text-primary-color font-semibold">
+//               {data.trees_equivalent}
+//             </span>
+//           </div>
+//           <div className="flex justify-between items-center mb-1">
+//             <p className="text-base">Carbon Footprint Reduction </p>
+//             <span className="text-lg text-orange-500 font-semibold">
+//               {data.carbon_footprint_reduction_percentage} %
+//             </span>
+//           </div>
+//         </AnalyticsCard>
+//       </div> */}

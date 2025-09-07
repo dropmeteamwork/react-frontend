@@ -31,20 +31,74 @@ export default function EnvironmentPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://dropme.up.railway.app/dashboard/metrics/environmental/"
+    const fetchWithRetry = async () => {
+      const accessToken = localStorage.getItem("access_token");
+      const refreshToken = localStorage.getItem("refresh_token");
+
+      if (!accessToken || !refreshToken) {
+        setError("Please log in again. Tokens are missing.");
+        setLoading(false);
+        return;
+      }
+
+      const getApiData = async (token) => {
+        return await axios.get(
+          "https://web-testing-3a06.up.railway.app/dashboard/v2/metrics/environmental/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
+      };
+
+      const refreshTokens = async () => {
+        try {
+          const response = await axios.post(
+            "https://web-testing-3a06.up.railway.app/dashboard/v2/auth/token/refresh/",
+            {
+              refresh: refreshToken,
+            }
+          );
+          const newAccessToken = response.data.access;
+          localStorage.setItem("access_token", newAccessToken);
+          return newAccessToken;
+        } catch (refreshErr) {
+          console.error("Failed to refresh token:", refreshErr);
+          setError("Session expired. Please log in again.");
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
+          throw refreshErr;
+        }
+      };
+
+      try {
+        const response = await getApiData(accessToken);
         console.log(response.data);
+
         setData(response.data);
       } catch (err) {
-        setError(err);
+        if (axios.isAxiosError(err) && err.response?.status === 401) {
+          try {
+            const newAccessToken = await refreshTokens();
+            const retryResponse = await getApiData(newAccessToken);
+            setData(retryResponse.data);
+          } catch (retryErr) {
+            setLoading(false);
+            return;
+          }
+        } else {
+          setError(
+            err.response?.data?.detail ||
+              err.message ||
+              "A network or server error occurred."
+          );
+        }
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+    fetchWithRetry();
   }, []);
 
   if (loading) {
@@ -58,7 +112,7 @@ export default function EnvironmentPage() {
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen text-red-600">
-        <p className="text-lg font-medium">Error: {error.message} </p>
+        <p className="text-lg font-medium">Error: {error} </p>
       </div>
     );
   }
@@ -67,28 +121,28 @@ export default function EnvironmentPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
         <StatusCard
           title="CO2 Emissions Saved"
-          number={`${data.co2_emissions_saved} Kg`}
+          number={`${data.env_info.co2_emissions_saved} Kg`}
           subTitle="Network-wide impact"
           pathD={icons[0].pathD}
           iconColor={icons[0].iconColor}
         />
         <StatusCard
           title="Water Conserved"
-          number={`${data.water_conserved} L`}
+          number={`${data.env_info.water_conserved} L`}
           subTitle="Total water saved"
           pathD={icons[1].pathD}
           iconColor={icons[1].iconColor}
         />
         <StatusCard
           title="Energy Saved"
-          number={`${data.energy_saved} kWh`}
+          number={`${data.env_info.energy_saved.toFixed(2)} kWh`}
           subTitle="Energy conservation"
           pathD={icons[2].pathD}
           iconColor={icons[2].iconColor}
         />
         <StatusCard
           title="Items Recycled"
-          number={data.total_recycled_items}
+          number={data.env_info.total_recycled_items}
           subTitle="Total items processed"
           pathD={icons[3].pathD}
           iconColor={icons[3].iconColor}
@@ -106,13 +160,13 @@ export default function EnvironmentPage() {
           <div className="flex justify-between items-center mb-1">
             <p className="text-base">Tree Equivalent </p>
             <span className="text-lg text-primary-color font-semibold">
-              {data.trees_equivalent}
+              {data.env_info.trees_equivalent}
             </span>
           </div>
           <div className="flex justify-between items-center mb-1">
             <p className="text-base">Carbon Footprint Reduction </p>
             <span className="text-lg text-orange-500 font-semibold">
-              {data.carbon_footprint_reduction_percentage} %
+              {data.env_info.carbon_footprint_reduction_percentage} %
             </span>
           </div>
         </AnalyticsCard>
