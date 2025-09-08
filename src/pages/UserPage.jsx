@@ -24,7 +24,7 @@ export default function UserPage({ className }) {
 
       const getApiData = async (token) => {
         return await axios.get(
-          "https://web-testing-3a06.up.railway.app/dashboard/v2/analytics/user-data",
+          "https://web-testing-3a06.up.railway.app/dashboard/v2/analytics/user-data/",
           {
             headers: {
               Authorization: `Bearer ${token}`,
