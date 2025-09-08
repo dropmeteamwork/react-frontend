@@ -28,7 +28,7 @@ const UserRetentionChart = ({ user_retension_data }) => {
         <Line
           type="monotone"
           dataKey="retention"
-          stroke="#8884d8"
+          stroke="#7bab43"
           activeDot={{ r: 8 }}
         />
       </LineChart>
