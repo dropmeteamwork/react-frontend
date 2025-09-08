@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import StatusCard from "../components/StatusCard";
 import AnalyticsCard from "../components/AnalyticsCard";
 import axios from "axios";
+import EnvironmentalImpactChart from "../components/Charts/EnvironmentalImpactChart";
 
 export default function EnvironmentPage() {
   const icons = [
@@ -148,11 +149,20 @@ export default function EnvironmentPage() {
           iconColor={icons[3].iconColor}
         />
       </div>
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+      <div className="mt-6 grid grid-cols-1 items-start lg:grid-cols-2 gap-4">
         <AnalyticsCard
           title="Environmental Impact Trends"
           subTitle="Monthly environmental impact metrics"
-        />
+        >
+          {data.monthly_env_impact ? (
+            <EnvironmentalImpactChart
+              monthly_env_impact={data.monthly_env_impact}
+            />
+          ) : (
+            <p>No monthly data available</p>
+          )}
+        </AnalyticsCard>
         <AnalyticsCard
           title="Carbon Footprint Redcution"
           subTitle="Equivalent environmental benefits"
