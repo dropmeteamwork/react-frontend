@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AnalyticsCard from "../components/AnalyticsCard";
 import UserCard from "../components/UserCard";
 import axios from "axios";
+import UserRetentionChart from "../components/Charts/UserRetentionChart";
 
 export default function UserPage({ className }) {
   const [data, setData] = useState(null);
@@ -143,6 +144,20 @@ export default function UserPage({ className }) {
             ))}
           </div>
         </div>
+      </div>
+      <div className="mt-6 grid grid-cols-1 items-start lg:grid-cols-2 gap-4">
+        <AnalyticsCard
+          title="User Retention Trends"
+          subTitle="Weekly retention rate over time"
+        >
+          {data.user_retension_data ? (
+            <UserRetentionChart
+              user_retension_data={data.user_retension_data}
+            />
+          ) : (
+            <p>No data saved</p>
+          )}{" "}
+        </AnalyticsCard>
       </div>
     </div>
   );
