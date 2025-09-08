@@ -9,20 +9,74 @@ export default function UserPage({ className }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://dropme.up.railway.app/dashboard/top-users/"
+    const fetchWithRetry = async () => {
+      const accessToken = localStorage.getItem("access_token");
+      const refreshToken = localStorage.getItem("refresh_token");
+
+      if (!accessToken || !refreshToken) {
+        setError("Please log in again. Tokens are missing.");
+        setLoading(false);
+        return;
+      }
+
+      const getApiData = async (token) => {
+        return await axios.get(
+          "https://web-testing-3a06.up.railway.app/dashboard/v2/analytics/user-data",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
+      };
+
+      const refreshTokens = async () => {
+        try {
+          const response = await axios.post(
+            "https://web-testing-3a06.up.railway.app/dashboard/v2/auth/token/refresh/",
+            {
+              refresh: refreshToken,
+            }
+          );
+          const newAccessToken = response.data.access;
+          localStorage.setItem("access_token", newAccessToken);
+          return newAccessToken;
+        } catch (refreshErr) {
+          console.error("Failed to refresh token:", refreshErr);
+          setError("Session expired. Please log in again.");
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
+          throw refreshErr;
+        }
+      };
+
+      try {
+        const response = await getApiData(accessToken);
         console.log(response.data);
+
         setData(response.data);
       } catch (err) {
-        setError(err);
+        if (axios.isAxiosError(err) && err.response?.status === 401) {
+          try {
+            const newAccessToken = await refreshTokens();
+            const retryResponse = await getApiData(newAccessToken);
+            setData(retryResponse.data);
+          } catch (retryErr) {
+            setLoading(false);
+            return;
+          }
+        } else {
+          setError(
+            err.response?.data?.detail ||
+              err.message ||
+              "A network or server error occurred."
+          );
+        }
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+    fetchWithRetry();
   }, []);
 
   if (loading) {
@@ -36,7 +90,7 @@ export default function UserPage({ className }) {
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen text-red-600">
-        <p className="text-lg font-medium">Error: {error.message} </p>
+        <p className="text-lg font-medium">Error: {error} </p>
       </div>
     );
   }
@@ -73,16 +127,18 @@ export default function UserPage({ className }) {
             </div>
           </div>
           <div className="grid grid-cols-1 gap-6 ">
-            {data.map((data, index) => (
+            {data.user_details.map((data, index) => (
               <UserCard
                 key={index}
                 userName={data.username}
                 userEmail={data.email}
-                userNumber={data.phone_number}
-                active={data.is_active}
+                userNumber={data.phone}
+                active={data.active}
                 userAge={data.age}
-                userPoints={data.points}
-                referral={data.referral_usage_count}
+                userPoints={data.total_points}
+                referral={data.referrals}
+                totalItems={data.total_items}
+                joined={data.joined}
               />
             ))}
           </div>
