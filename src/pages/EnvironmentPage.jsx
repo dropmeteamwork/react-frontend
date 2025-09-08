@@ -149,10 +149,10 @@ export default function EnvironmentPage() {
         />
       </div>
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* <AnalyticsCard
+        <AnalyticsCard
           title="Environmental Impact Trends"
           subTitle="Monthly environmental impact metrics"
-        /> */}
+        />
         <AnalyticsCard
           title="Carbon Footprint Redcution"
           subTitle="Equivalent environmental benefits"

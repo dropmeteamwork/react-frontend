@@ -2,9 +2,11 @@
 import React, { useState, useEffect } from "react";
 import dropmeLogo from "../assets/images/dropme-logo.png";
 import SvgIcon from "./SvgIcon";
+import {useNavigate } from "react-router";
 
 export default function NavBar() {
   const [currentDateTime, setCurrentDateTime] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -44,8 +46,8 @@ export default function NavBar() {
       "M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0",
     privacy:
       "M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z",
-    logout:
-      "M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15",
+    login:
+      "M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9",
   };
 
   return (
@@ -95,6 +97,16 @@ export default function NavBar() {
                 />
                 <span className="hidden md:inline text-sm md:text-base">
                   Privacy
+                </span>
+              </button>
+            </li>
+
+            {/* Login Button */}
+            <li>
+              <button onClick={()=>navigate("/")} className="btn btn-ghost font-normal flex items-center gap-2">
+                <SvgIcon pathD={iconPaths.login} className="size-4 md:size-5" />
+                <span className="hidden md:inline text-sm md:text-base">
+                  Login
                 </span>
               </button>
             </li>
