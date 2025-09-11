@@ -122,14 +122,14 @@ export default function EnvironmentPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
         <StatusCard
           title="CO2 Emissions Saved"
-          number={`${data.env_info.co2_emissions_saved} Kg`}
+          number={`${data.env_info.co2_emissions_saved.toFixed(2)} Kg`}
           subTitle="Network-wide impact"
           pathD={icons[0].pathD}
           iconColor={icons[0].iconColor}
         />
         <StatusCard
           title="Water Conserved"
-          number={`${data.env_info.water_conserved} L`}
+          number={`${data.env_info.water_conserved.toFixed(2)} L`}
           subTitle="Total water saved"
           pathD={icons[1].pathD}
           iconColor={icons[1].iconColor}
