@@ -3,6 +3,7 @@ import AnalyticsCard from "../components/AnalyticsCard";
 import UserCard from "../components/UserCard";
 import axios from "axios";
 import UserRetentionChart from "../components/Charts/UserRetentionChart";
+import api from "../services/api";
 
 export default function UserPage({ className }) {
   const [data, setData] = useState(null);
@@ -11,75 +12,93 @@ export default function UserPage({ className }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
 
+  // useEffect(() => {
+  //   const fetchWithRetry = async () => {
+  //     const accessToken = localStorage.getItem("access_token");
+  //     const refreshToken = localStorage.getItem("refresh_token");
+
+  //     if (!accessToken || !refreshToken) {
+  //       setError("Please log in again. Tokens are missing.");
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     const getApiData = async (token) => {
+  //       return await axios.get(
+  //         "https://web-testing-3a06.up.railway.app/dashboard/v2/analytics/user-data/",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //     };
+
+  //     const refreshTokens = async () => {
+  //       try {
+  //         const response = await axios.post(
+  //           "https://web-testing-3a06.up.railway.app/dashboard/v2/auth/token/refresh/",
+  //           {
+  //             refresh: refreshToken,
+  //           }
+  //         );
+  //         const newAccessToken = response.data.access;
+  //         localStorage.setItem("access_token", newAccessToken);
+  //         return newAccessToken;
+  //       } catch (refreshErr) {
+  //         console.error("Failed to refresh token:", refreshErr);
+  //         setError("Session expired. Please log in again.");
+  //         localStorage.removeItem("access_token");
+  //         localStorage.removeItem("refresh_token");
+  //         throw refreshErr;
+  //       }
+  //     };
+
+  //     try {
+  //       const response = await getApiData(accessToken);
+  //       console.log(response.data);
+
+  //       setData(response.data);
+  //     } catch (err) {
+  //       if (axios.isAxiosError(err) && err.response?.status === 401) {
+  //         try {
+  //           const newAccessToken = await refreshTokens();
+  //           const retryResponse = await getApiData(newAccessToken);
+  //           setData(retryResponse.data);
+  //         } catch (retryErr) {
+  //           setLoading(false);
+  //           return;
+  //         }
+  //       } else {
+  //         setError(
+  //           err.response?.data?.detail ||
+  //             err.message ||
+  //             "A network or server error occurred."
+  //         );
+  //       }
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchWithRetry();
+  // }, []);
+
   useEffect(() => {
-    const fetchWithRetry = async () => {
-      const accessToken = localStorage.getItem("access_token");
-      const refreshToken = localStorage.getItem("refresh_token");
-
-      if (!accessToken || !refreshToken) {
-        setError("Please log in again. Tokens are missing.");
-        setLoading(false);
-        return;
-      }
-
-      const getApiData = async (token) => {
-        return await axios.get(
-          "https://web-testing-3a06.up.railway.app/dashboard/v2/analytics/user-data/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      };
-
-      const refreshTokens = async () => {
-        try {
-          const response = await axios.post(
-            "https://web-testing-3a06.up.railway.app/dashboard/v2/auth/token/refresh/",
-            {
-              refresh: refreshToken,
-            }
-          );
-          const newAccessToken = response.data.access;
-          localStorage.setItem("access_token", newAccessToken);
-          return newAccessToken;
-        } catch (refreshErr) {
-          console.error("Failed to refresh token:", refreshErr);
-          setError("Session expired. Please log in again.");
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("refresh_token");
-          throw refreshErr;
-        }
-      };
-
+    const fetchData = async () => {
       try {
-        const response = await getApiData(accessToken);
-        console.log(response.data);
-
+        const response = await api.get("analytics/user-data/");
         setData(response.data);
       } catch (err) {
-        if (axios.isAxiosError(err) && err.response?.status === 401) {
-          try {
-            const newAccessToken = await refreshTokens();
-            const retryResponse = await getApiData(newAccessToken);
-            setData(retryResponse.data);
-          } catch (retryErr) {
-            setLoading(false);
-            return;
-          }
-        } else {
-          setError(
-            err.response?.data?.detail ||
-              err.message ||
-              "A network or server error occurred."
-          );
-        }
+        setError(
+          err.response?.data?.detail ||
+            err.message ||
+            "A network or server error occurred."
+        );
       } finally {
         setLoading(false);
       }
     };
-    fetchWithRetry();
+    fetchData();
   }, []);
 
   // Effect to filter users whenever the search term or data changes
