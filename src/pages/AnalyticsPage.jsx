@@ -3,6 +3,7 @@ import AnalyticsCard from "../components/AnalyticsCard";
 import AiSystemMetricsCard from "../components/AiSystemMetricsCard";
 import api from "../services/api";
 import UserEngagementChart from "../components/Charts/UserEngagementChart";
+import RecyclingTrendsChart from "../components/Charts/RecyclingTrendsChart";
 
 export default function AnalyticsPage({ className }) {
   const [data, setData] = useState(null);
@@ -51,17 +52,27 @@ export default function AnalyticsPage({ className }) {
           title="User Engagement Trends"
           subTitle="Daily active users and session metrics"
         >
-            {/* Display the chart component here */}
-        {data && data.UserEngagement_Trends_section ? (
-          <UserEngagementChart engagementData={data.UserEngagement_Trends_section} />
-        ) : (
-          <p>No user engagement data available.</p>
-        )}
+          {/* Display the chart component here */}
+          {data && data.UserEngagement_Trends_section ? (
+            <UserEngagementChart
+              engagementData={data.UserEngagement_Trends_section}
+            />
+          ) : (
+            <p>No user engagement data available.</p>
+          )}
         </AnalyticsCard>
         <AnalyticsCard
           title="Recycling Trends"
           subTitle="Monthly recycling volume over time"
-        ></AnalyticsCard>
+        >
+          {data && data.Recycling_Trends_section ? (
+            <RecyclingTrendsChart
+              recyclingData={data.Recycling_Trends_section}
+            />
+          ) : (
+            <p>No recycling data available.</p>
+          )}
+        </AnalyticsCard>
       </div>
       <div className={`${className} card bg-base-100 shadow-sm`}>
         <div className="card-body">
