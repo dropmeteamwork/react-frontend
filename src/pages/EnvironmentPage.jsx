@@ -108,6 +108,8 @@ export default function EnvironmentPage() {
       try {
         const response = await api.get("metrics/environmental/");
         setData(response.data);
+        console.log(response.data);
+        
       } catch (err) {
         setError(
           err.response?.data?.detail ||

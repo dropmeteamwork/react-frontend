@@ -88,6 +88,7 @@ export default function UserPage({ className }) {
       try {
         const response = await api.get("analytics/user-data/");
         setData(response.data);
+        console.log(response.data);
       } catch (err) {
         setError(
           err.response?.data?.detail ||

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MachineCard from "../components/MachineCard";
 import axios from "axios";
-
+import api from "../services/api";
 
 export default function MachinePage() {
   const [data, setData] = useState(null);
@@ -11,13 +11,15 @@ export default function MachinePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://dropme.up.railway.app/dashboard/metrics/machines/"
-        );
-        console.log(response.data);
+        const response = await api.get("metrics/machines/");
         setData(response.data);
+        console.log(response.data);
       } catch (err) {
-        setError(err);
+        setError(
+          err.response?.data?.detail ||
+            err.message ||
+            "A network or server error occurred."
+        );
       } finally {
         setLoading(false);
       }
@@ -51,7 +53,7 @@ export default function MachinePage() {
               Monitor and manage recycling machines
             </p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 ">
             {data.map((data, index) => (
               <MachineCard
                 key={index}
@@ -60,7 +62,9 @@ export default function MachinePage() {
                 totalCollected={data.total_collected}
                 dailyAvg={data.daily_average}
                 efficiency={data.efficiency}
-                isFull={data.is_full}
+                status={data.status}
+                bottlesCapacity={data.bottles_capacity}
+                cansCapacity={data.cans_capacity}
               />
             ))}
           </div>

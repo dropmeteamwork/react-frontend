@@ -7,19 +7,25 @@ export default function MachineCard({
   totalCollected,
   dailyAvg,
   efficiency,
-  isFull,
+  status,
+  bottlesCapacity,
+  cansCapacity,
 }) {
+  const parsedBottlesCapacity = bottlesCapacity
+    ? parseFloat(bottlesCapacity)
+    : 0;
+  const parsedCansCapacity = cansCapacity ? parseFloat(cansCapacity) : 0;
   return (
     <div className="p-4 card shadow-md border-1 border-gray-200">
-      <div className="flex justify-between items-start ">
+      <div className="flex justify-between flex-col md:flex-row gap-4 items-start ">
         <div className="flex gap-4 items-center">
           <div>
-            {location && ( 
+            {location && (
               <Link
-                to={location} 
+                to={location}
                 className="cursor-pointer hover:stroke-blue-500 transition-colors duration-200" // Add hover effect for visual feedback
-                aria-label={`View ${name} on map`} 
-                title={`View ${name} on map`} 
+                aria-label={`View ${name} on map`}
+                title={`View ${name} on map`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -70,23 +76,34 @@ export default function MachineCard({
               Total collected: {totalCollected} items{" "}
             </p>
             <p className="text-gray-500 ">
-              Daily average: {dailyAvg} items • Efficiency: {efficiency} %
+              Daily average: {dailyAvg} items • Efficiency: {efficiency}
             </p>
           </div>
         </div>
-        <div className="text-right ">
-          <h3 className="mb-2 font-semibold">Efficiency</h3>
+        <div className="text-right w-full md:w-auto ">
+          <h3 className="mb-2 font-semibold">
+            Bottles Capacity:{" "}
+            <span className="font-normal">{bottlesCapacity}</span>
+          </h3>
           <progress
-            className="progress w-30 block mb-3"
-            value={efficiency}
-            max="10"
+            className="progress w-full block mb-3"
+            value={parsedBottlesCapacity}
+            max="100"
+          ></progress>
+          <h3 className="mb-2 font-semibold">
+            Cans Capacity: <span className="font-normal">{cansCapacity}</span>
+          </h3>
+          <progress
+            className="progress w-full block mb-3"
+            value={parsedCansCapacity}
+            max="100"
           ></progress>
           <div
             className={`badge text-white ${
-              isFull ? "bg-red-600" : "bg-primary-color"
+              status == "available" ? "bg-primary-color" : "bg-red-600"
             }`}
           >
-            {isFull ? "Warning" : "Normal"}
+            {status == "available" ? "available" : "Warning"}
           </div>{" "}
         </div>
       </div>
