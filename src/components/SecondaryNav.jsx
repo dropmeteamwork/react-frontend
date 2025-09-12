@@ -89,15 +89,15 @@ export default function SecondaryNav() {
         </div>
       </NavLink>
 
-      {/* <NavLink
-        to="/analytics"
+      <NavLink
+        to="/app/analytics"
         className={({ isActive }) => getNavLinkClasses(isActive)}
       >
         <div className="flex items-center gap-2 " title="analytics">
           <SvgIcon pathD={iconPaths.analytics} className="size-6" />
           <span className="hidden md:inline text-base">Analytics</span>
         </div>
-      </NavLink> */}
+      </NavLink>
 
       {/* <NavLink
         to="/reports"

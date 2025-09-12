@@ -56,6 +56,7 @@ export default function App() {
         <Route path="environment" element={<EnvironmentPage />} />
         <Route path="users" element={<UserPage />} />
         <Route path="machines" element={<MachinePage />} />
+        <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="transaction" element={<TransactionPage />} />
       </Route>
     </Routes>

@@ -38,7 +38,7 @@ export default function MachinePage() {
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen text-red-600">
-        <p className="text-lg font-medium">Error: {error.message} </p>
+        <p className="text-lg font-medium">Error: {error} </p>
       </div>
     );
   }
