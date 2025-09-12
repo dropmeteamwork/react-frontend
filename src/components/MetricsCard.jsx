@@ -7,6 +7,7 @@ export default function MetricsCard({
   activeUser,
   avgPoint,
   totalPoints,
+  engageScore,
 }) {
   return (
     <>
@@ -25,13 +26,19 @@ export default function MetricsCard({
           <div className="flex justify-between items-center mb-1">
             <p className="text-base">Avg Points Per User </p>
             <span className="text-lg text-purple-600 font-semibold">
-              {avgPoint}
+              {avgPoint} mins
             </span>
           </div>
           <div className="flex justify-between items-center mb-1">
             <p className="text-base">Total Points </p>
             <span className="text-lg text-red-600 font-semibold">
               {totalPoints}{" "}
+            </span>
+          </div>
+          <div className="flex justify-between items-center ">
+            <p className="text-base">Engagement Score </p>
+            <span className="text-lg text-primary-color font-semibold">
+              {engageScore}{" "}
             </span>
           </div>
         </div>

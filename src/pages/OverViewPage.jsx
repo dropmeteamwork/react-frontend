@@ -4,6 +4,9 @@ import MetricsCard from "../components/MetricsCard";
 import AnalyticsCard from "../components/AnalyticsCard";
 import AlertCard from "../components/AlertCard";
 import axios from "axios";
+import api from "../services/api";
+import NetworkPerformanceChart from "../components/Charts/NetworkPerformanceChart";
+import MaterialDistributionChart from "../components/Charts/MaterialDistributionChart";
 
 export default function OverViewPage() {
   const icons = [
@@ -22,6 +25,11 @@ export default function OverViewPage() {
         "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z",
       iconColor: "#0065A3",
     },
+    {
+      pathD:
+        "M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z",
+      iconColor: "#FFB020",
+    },
   ];
 
   const [data, setData] = useState(null);
@@ -31,13 +39,15 @@ export default function OverViewPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://dropme.up.railway.app/dashboard/metrics/overview/"
-        );
-        console.log(response.data);
+        const response = await api.get("metrics/overview/");
         setData(response.data);
+        console.log(response.data);
       } catch (err) {
-        setError(err);
+        setError(
+          err.response?.data?.detail ||
+            err.message ||
+            "A network or server error occurred."
+        );
       } finally {
         setLoading(false);
       }
@@ -56,7 +66,7 @@ export default function OverViewPage() {
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen text-red-600">
-        <p className="text-lg font-medium">Error: {error.message} </p>
+        <p className="text-lg font-medium">Error: {error} </p>
       </div>
     );
   }
@@ -64,50 +74,105 @@ export default function OverViewPage() {
   return (
     <div className="">
       {/* total status card */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
         <StatusCard
           title="Total Users"
-          number={data.total_users}
+          number={data.Total_Users_section.total_users}
+          subTitle={data.Total_Users_section.today_active_users}
           pathD={icons[0].pathD}
           iconColor={icons[0].iconColor}
-          // Dummy data for additional metrics
-          changeFromLastWeek="+12.5% from last week"
+          changeFromLastWeek={
+            data.Total_Users_section.users_change_from_last_week
+          }
         />
         <StatusCard
           title="Active Partners"
-          number={data.active_partners}
+          number={data.Active_Partners_section.total_partners}
+          subTitle="All partners operational"
           pathD={icons[1].pathD}
           iconColor={icons[1].iconColor}
-          // Dummy data for additional metrics
-          changeFromLastWeek="+8.2% from last week"
+          changeFromLastWeek={
+            data.Active_Partners_section.partners_change_from_last_week
+          }
+        />
+        <StatusCard
+          title="System Uptime"
+          number={data.System_Uptime_section.avg_system_uptime}
+          pathD={icons[2].pathD}
+          iconColor={icons[2].iconColor}
+          changeFromLastWeek={data.System_Uptime_section.analysis_period}
         />
         <StatusCard
           title="Total Revenue"
-          number={data.total_revenue}
-          pathD={icons[2].pathD}
-          iconColor={icons[2].iconColor}
-          // Dummy data for additional metrics
-          changeFromLastWeek="+5.1% from last week"
+          number={data.Total_Revenue_section.total_revenue}
+          subTitle="This month"
+          pathD={icons[3].pathD}
+          iconColor={icons[3].iconColor}
+          changeFromLastWeek={
+            data.Total_Revenue_section.revenue_change_from_last_week
+          }
         />
       </div>
 
       {/* User Engagement Card */}
-      <div className="mt-6 mb-6 grid grid-cols-1 gap-4">
+      <div className="mt-6 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
         <MetricsCard
           title="User Engagement"
           subTitle="Daily active users and engagement metrics"
-          activeUser={data.active_users}
-          avgPoint={data.average_points_per_user}
-          totalPoints={data.total_points}
+          activeUser={data.User_Engagement_section.daily_active_users}
+          avgPoint={data.User_Engagement_section.avg_session_duration}
+          totalPoints={data.User_Engagement_section.average_points_per_user}
+          engageScore={data.User_Engagement_section.engagement_score}
         />
+
+        <AnalyticsCard
+          title="User Retention"
+          subTitle="User retention and loyalty metrics"
+        >
+          <div className="flex justify-between items-center mb-1">
+            <p className="text-base">Retention Rate</p>
+            <span className="text-lg text-primary-color font-semibold">
+              {data.User_Retention_section.retension_rate} %
+            </span>
+          </div>
+          <progress
+            className="progress progress-neutral w-full"
+            value={data.User_Retention_section.retension_rate}
+            max="100"
+          ></progress>
+          <p className="text-gray-500 text-[12px] mt-2">
+            Based on {data.User_Retention_section.cohort_analysis_period} cohort
+            analysis
+          </p>
+        </AnalyticsCard>
       </div>
 
-      {/* <div className="mt-6 mb-6 grid grid-cols-1 gap-4">
+      <div className="mt-6 mb-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <AnalyticsCard
+          title="Network Performance"
+          subTitle="Daily recycling volume and revenue trends"
+        >
+          {data && data.Network_Performance_section ? (
+            <NetworkPerformanceChart
+              performanceData={data.Network_Performance_section}
+            />
+          ) : (
+            <p>No data provided</p>
+          )}
+        </AnalyticsCard>
         <AnalyticsCard
           title="Material Distribution"
           subTitle="Breakdown by material type"
-        />
-      </div> */}
+        >
+          {data && data.Material_Distribution_section ? (
+            <MaterialDistributionChart
+              material_distribution_data={data.Material_Distribution_section}
+            />
+          ) : (
+            <p>No data available for material distribution.</p>
+          )}
+        </AnalyticsCard>
+      </div>
 
       <div className="mt-6 card bg-base-100 shadow-sm ">
         <div className="card-body">
@@ -118,8 +183,8 @@ export default function OverViewPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-4">
-            <AlertCard machine="Cairo - Maadi" condition="medium"/>
-            <AlertCard machine="Cairo - 10th Of Ramdan" condition="low"/>
+            <AlertCard machine="Cairo - Maadi" condition="medium" />
+            <AlertCard machine="Cairo - 10th Of Ramdan" condition="low" />
           </div>
         </div>
       </div>

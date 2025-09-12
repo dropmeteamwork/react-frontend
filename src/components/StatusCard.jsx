@@ -28,11 +28,16 @@ export default function StatusCard({
             </li>
 
             {/* Display subtitle if provided */}
-            {subTitle && (
+            {title == "Total Users" ? (
+              <li>
+                <span className="text-gray-500">{subTitle} active today</span>
+              </li>
+            ) : (
               <li>
                 <span className="text-gray-500">{subTitle}</span>
               </li>
             )}
+
             {/* Display activeToday if provided */}
             {activeToday && (
               <li>
