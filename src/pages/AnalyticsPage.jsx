@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AnalyticsCard from "../components/AnalyticsCard";
 import AiSystemMetricsCard from "../components/AiSystemMetricsCard";
 import api from "../services/api";
+import UserEngagementChart from "../components/Charts/UserEngagementChart";
 
 export default function AnalyticsPage({ className }) {
   const [data, setData] = useState(null);
@@ -46,8 +47,21 @@ export default function AnalyticsPage({ className }) {
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-        <AnalyticsCard />
-        <AnalyticsCard />
+        <AnalyticsCard
+          title="User Engagement Trends"
+          subTitle="Daily active users and session metrics"
+        >
+            {/* Display the chart component here */}
+        {data && data.UserEngagement_Trends_section ? (
+          <UserEngagementChart engagementData={data.UserEngagement_Trends_section} />
+        ) : (
+          <p>No user engagement data available.</p>
+        )}
+        </AnalyticsCard>
+        <AnalyticsCard
+          title="Recycling Trends"
+          subTitle="Monthly recycling volume over time"
+        ></AnalyticsCard>
       </div>
       <div className={`${className} card bg-base-100 shadow-sm`}>
         <div className="card-body">
