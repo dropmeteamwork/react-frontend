@@ -9,7 +9,6 @@ export default function AnalyticsPage({ className }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  useEffect;
   useEffect(() => {
     const fetchData = async () => {
       try {

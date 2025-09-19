@@ -137,7 +137,7 @@ export default function UserPage({ className }) {
               <h2 className="font-semibold text-xl mb-2">User Database</h2>
               <p className="text-gray-500">Manage and monitor user accounts</p>
             </div>
-            <div className="w-[260px] self-start ">
+            <div className="max-w-[260px] self-end ">
               <label className="input">
                 <svg
                   className="h-[1em] opacity-50"
@@ -158,7 +158,7 @@ export default function UserPage({ className }) {
                 <input
                   type="search"
                   className="grow"
-                  placeholder="Search"
+                  placeholder="Search by username"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
