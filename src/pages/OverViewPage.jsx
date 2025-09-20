@@ -3,7 +3,6 @@ import StatusCard from "../components/StatusCard";
 import MetricsCard from "../components/MetricsCard";
 import AnalyticsCard from "../components/AnalyticsCard";
 import AlertCard from "../components/AlertCard";
-import axios from "axios";
 import api from "../services/api";
 import NetworkPerformanceChart from "../components/Charts/NetworkPerformanceChart";
 import MaterialDistributionChart from "../components/Charts/MaterialDistributionChart";
@@ -33,13 +32,15 @@ export default function OverViewPage() {
   ];
 
   const [data, setData] = useState(null);
+  const [months, setMonths] = useState(6); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const response = await api.get("metrics/overview/");
+        const response = await api.get(`metrics/overview/?months=${months}`);
         setData(response.data);
         console.log(response.data);
       } catch (err) {
@@ -53,7 +54,7 @@ export default function OverViewPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [months]);
 
   if (loading) {
     return (
@@ -152,6 +153,25 @@ export default function OverViewPage() {
           title="Network Performance"
           subTitle="Daily recycling volume and revenue trends"
         >
+          <div className="flex gap-4 mb-4">
+            <button
+              onClick={() => setMonths(6)}
+              className={`px-3 py-1 cursor-pointer rounded ${
+                months === 6 ? "bg-primary-color  text-white" : "bg-gray-200"
+              }`}
+            >
+              Last 6 Months
+            </button>
+            <button
+              onClick={() => setMonths(12)}
+              className={`px-3 py-1 cursor-pointer rounded ${
+                months === 12 ? "bg-primary-color  text-white" : "bg-gray-200"
+              }`}
+            >
+              Last 12 Months
+            </button>
+          </div>
+
           {data && data.Network_Performance_section ? (
             <NetworkPerformanceChart
               performanceData={data.Network_Performance_section}
@@ -160,10 +180,30 @@ export default function OverViewPage() {
             <p>No data provided</p>
           )}
         </AnalyticsCard>
+
         <AnalyticsCard
           title="Material Distribution"
           subTitle="Breakdown by material type"
         >
+          <div className="flex gap-4 mb-4">
+            <button
+              onClick={() => setMonths(6)}
+              className={`px-3 py-1 cursor-pointer rounded ${
+                months === 6 ? "bg-primary-color text-white" : "bg-gray-200"
+              }`}
+            >
+              Last 6 Months
+            </button>
+            <button
+              onClick={() => setMonths(12)}
+              className={`px-3 py-1 cursor-pointer rounded ${
+                months === 12 ? "bg-primary-color text-white" : "bg-gray-200"
+              }`}
+            >
+              Last 12 Months
+            </button>
+          </div>
+
           {data && data.Material_Distribution_section ? (
             <MaterialDistributionChart
               material_distribution_data={data.Material_Distribution_section}

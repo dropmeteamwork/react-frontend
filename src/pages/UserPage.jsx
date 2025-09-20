@@ -11,6 +11,8 @@ export default function UserPage({ className }) {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
+    const [months, setMonths] = useState(6);
+  
 
   // useEffect(() => {
   //   const fetchWithRetry = async () => {
@@ -86,7 +88,7 @@ export default function UserPage({ className }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("analytics/user-data/");
+        const response = await api.get(`analytics/user-data/?weeks=${months}`);
         setData(response.data);
         console.log(response.data);
       } catch (err) {
@@ -100,7 +102,7 @@ export default function UserPage({ className }) {
       }
     };
     fetchData();
-  }, []);
+  }, [months]);
 
   // Effect to filter users whenever the search term or data changes
   useEffect(() => {
@@ -193,6 +195,24 @@ export default function UserPage({ className }) {
           title="User Retention Trends"
           subTitle="Weekly retention rate over time"
         >
+           <div className="flex gap-4 mb-4">
+            <button
+              onClick={() => setMonths(6)}
+              className={`px-3 py-1 cursor-pointer rounded ${
+                months === 6 ? "bg-primary-color  text-white" : "bg-gray-200"
+              }`}
+            >
+              Last 6 Months
+            </button>
+            <button
+              onClick={() => setMonths(12)}
+              className={`px-3 py-1 cursor-pointer rounded ${
+                months === 12 ? "bg-primary-color  text-white" : "bg-gray-200"
+              }`}
+            >
+              Last 12 Months
+            </button>
+          </div>
           {data.user_retension_data ? (
             <UserRetentionChart
               user_retension_data={data.user_retension_data}

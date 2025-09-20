@@ -9,10 +9,14 @@ export default function AnalyticsPage({ className }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [months, setMonths] = useState(6);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("analytics/analytics-data/");
+        const response = await api.get(
+          `analytics/analytics-data/?months=${months}`
+        );
         setData(response.data);
         console.log(response.data);
       } catch (err) {
@@ -26,7 +30,7 @@ export default function AnalyticsPage({ className }) {
       }
     };
     fetchData();
-  }, []);
+  }, [months]);
 
   if (loading) {
     return (
@@ -51,6 +55,7 @@ export default function AnalyticsPage({ className }) {
           title="User Engagement Trends"
           subTitle="Daily active users and session metrics"
         >
+          
           {/* Display the chart component here */}
           {data && data.UserEngagement_Trends_section ? (
             <UserEngagementChart
@@ -64,6 +69,24 @@ export default function AnalyticsPage({ className }) {
           title="Recycling Trends"
           subTitle="Monthly recycling volume over time"
         >
+          <div className="flex gap-4 mb-4">
+            <button
+              onClick={() => setMonths(6)}
+              className={`px-3 py-1 cursor-pointer rounded ${
+                months === 6 ? "bg-primary-color  text-white" : "bg-gray-200"
+              }`}
+            >
+              Last 6 Months
+            </button>
+            <button
+              onClick={() => setMonths(12)}
+              className={`px-3 py-1 cursor-pointer rounded ${
+                months === 12 ? "bg-primary-color  text-white" : "bg-gray-200"
+              }`}
+            >
+              Last 12 Months
+            </button>
+          </div>
           {data && data.Recycling_Trends_section ? (
             <RecyclingTrendsChart
               recyclingData={data.Recycling_Trends_section}

@@ -13,11 +13,12 @@ export default function TransactionPage() {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [months, setMonths] = useState(6);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("analytics/transactions/");
+        const response = await api.get(`analytics/transactions/?months=${months}`);
         console.log(response.data);
 
         setData(response.data);
@@ -32,7 +33,7 @@ export default function TransactionPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [months]);
 
   useEffect(() => {
     if (data && data.Transaction_Details_section) {
@@ -186,6 +187,24 @@ export default function TransactionPage() {
           title={"Points vs Coupons Trends"}
           subTitle={"Monthly comparison of points and coupon usage"}
         >
+          <div className="flex gap-4 mb-4">
+            <button
+              onClick={() => setMonths(6)}
+              className={`px-3 py-1 cursor-pointer rounded ${
+                months === 6 ? "bg-primary-color text-white" : "bg-gray-200"
+              }`}
+            >
+              Last 6 Months
+            </button>
+            <button
+              onClick={() => setMonths(12)}
+              className={`px-3 py-1 cursor-pointer rounded ${
+                months === 12 ? "bg-primary-color text-white" : "bg-gray-200"
+              }`}
+            >
+              Last 12 Months
+            </button>
+          </div>
           {data && data.Point_vs_Coupons_section ? (
             <PointsVsCouponsChart
               pointsCouponsData={data.Point_vs_Coupons_section}
