@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import dropmeLogo from "../assets/images/dropme-logo.png";
 import SvgIcon from "./SvgIcon";
-import {useNavigate } from "react-router";
+import {NavLink, useNavigate } from "react-router";
 
 export default function NavBar() {
   const [currentDateTime, setCurrentDateTime] = useState("");
@@ -90,6 +90,7 @@ export default function NavBar() {
 
             {/* Privacy Button */}
             <li>
+              <NavLink to="https://privacy-policy-seven-azure.vercel.app/" className="hover:bg-transparent">
               <button className="btn btn-ghost font-normal flex items-center gap-2">
                 <SvgIcon
                   pathD={iconPaths.privacy}
@@ -99,6 +100,7 @@ export default function NavBar() {
                   Privacy
                 </span>
               </button>
+              </NavLink>
             </li>
 
             {/* Login Button */}
