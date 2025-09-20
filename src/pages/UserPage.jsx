@@ -202,7 +202,7 @@ export default function UserPage({ className }) {
                 months === 6 ? "bg-primary-color  text-white" : "bg-gray-200"
               }`}
             >
-              Last 6 Months
+              Last 6 weeks
             </button>
             <button
               onClick={() => setMonths(12)}
@@ -210,7 +210,7 @@ export default function UserPage({ className }) {
                 months === 12 ? "bg-primary-color  text-white" : "bg-gray-200"
               }`}
             >
-              Last 12 Months
+              Last 12 weeks
             </button>
           </div>
           {data.user_retension_data ? (
